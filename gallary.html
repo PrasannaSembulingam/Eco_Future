@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFuture - Gallery</title>
+    <link rel="icon" href="image/logo.png" >
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="image/logo.png" alt="climate change logo">
+                <div class="logo-text">Eco<span>Future</span></div>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html" >Home</a></li>
+                    <li><a href="gallary.html" class="active">Gallery</a></li>
+                    <li><a href="#">Simulator</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#">UserProfile</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="gallery-header">
+            <h2 class="title">Climate Change Gallery</h2>
+            <p>A visual representation of the impacts of climate change and the solutions we must embrace.</p>
+        </div>
+
+        <div class="gallery-controls">
+            <button class="btn btn-secondary" id="btnToggleFont">Toggle Modal Font Style</button>
+            <button class="btn btn-secondary" id="btnToggleTheme">Toggle Modal Color Theme</button>
+        </div>
+
+        <div class="gallery-grid">
+            
+            <article class="gallery-item" data-title="Melting Glaciers" data-img="https://media.istockphoto.com/id/2195506044/photo/wonderful-view-landscape-of-icebergs-and-the-front-wall-of-the-eqi-glazier-with-dramatic-sky.jpg?s=612x612&w=0&k=20&c=IVbaq-8rajeYsYYwMPUR0xWjAsW5HCJxr3AKVQBrm1g=" data-desc="Glaciers are melting because the Earth is getting hotter. This makes sea levels rise and reduces clean water.">
+                <img src="https://media.istockphoto.com/id/2195506044/photo/wonderful-view-landscape-of-icebergs-and-the-front-wall-of-the-eqi-glazier-with-dramatic-sky.jpg?s=612x612&w=0&k=20&c=IVbaq-8rajeYsYYwMPUR0xWjAsW5HCJxr3AKVQBrm1g=" alt="Melting Glaciers">
+                <div class="gallery-content">
+                    <h4>Melting Glaciers</h4>
+                    <p>Rising temperatures accelerating ice loss.</p>
+                </div>
+            </article>
+
+            <article class="gallery-item" data-title="Devastating Wildfires" data-img="https://media.istockphoto.com/id/2186685950/photo/forest-wildfire-at-night.jpg?s=612x612&w=0&k=20&c=ChwHfzc-2vCaZopBo5CQKhhdSq6yrB7-o5YBJiWdEvY=" data-desc="Long dry periods and high temperatures cause more wildfires. These fires damage nature and force people to leave their homes.">
+                <img src="https://media.istockphoto.com/id/2186685950/photo/forest-wildfire-at-night.jpg?s=612x612&w=0&k=20&c=ChwHfzc-2vCaZopBo5CQKhhdSq6yrB7-o5YBJiWdEvY=" alt="Wildfires">
+                <div class="gallery-content">
+                    <h4>Wildfires</h4>
+                    <p>Extreme heat waves causing forest fires.</p>
+                </div>
+            </article>
+
+            <article class="gallery-item" data-title="Renewable Energy Transition" data-img="https://media.istockphoto.com/id/2162230248/photo/wind-turbine-power-at-sunrise.jpg?s=612x612&w=0&k=20&c=u1zPeeczQJ1-MmKIw_JX4qZqH5-NDNSA_SIZ87XrOV4=" data-desc="Using clean energy like wind and solar helps reduce pollution and fight climate change.">
+                <img src="https://media.istockphoto.com/id/2162230248/photo/wind-turbine-power-at-sunrise.jpg?s=612x612&w=0&k=20&c=u1zPeeczQJ1-MmKIw_JX4qZqH5-NDNSA_SIZ87XrOV4=" alt="Renewable energy windmills">
+                <div class="gallery-content">
+                    <h4>Renewable Energy</h4>
+                    <p>Harnessing wind power for a clean future.</p>
+                </div>
+            </article>
+
+            <article class="gallery-item" data-title="Rising Sea Levels" data-img="https://media.istockphoto.com/id/535795218/photo/coastal-erosion-houses-slide-down-to-sea.jpg?s=612x612&w=0&k=20&c=OKj9oyk2bhnmNY2WdTL5hjev7UjDCa4U07ruP3aibvU=" data-desc="Ice is melting and oceans are getting warmer. This makes sea levels rise and can flood cities and islands.">
+                <img src="https://media.istockphoto.com/id/535795218/photo/coastal-erosion-houses-slide-down-to-sea.jpg?s=612x612&w=0&k=20&c=OKj9oyk2bhnmNY2WdTL5hjev7UjDCa4U07ruP3aibvU=" alt="Flooding and rising sea levels">
+                <div class="gallery-content">
+                    <h4>Rising Sea Levels</h4>
+                    <p>Coastal communities facing imminent threats.</p>
+                </div>
+            </article>
+
+        </div>
+    </main>
+    <!-- popup modal -->
+    <div class="modal-overlay" id="galleryModal">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-img-container">
+                <img src="" alt="Full view" class="modal-img" id="modalImg">
+            </div>
+            <h3 class="modal-title" id="modalTitle">Title Here</h3>
+            <p class="modal-desc" id="modalDesc">Description here</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><span class="footerblack">About</span>EcoFuture</h3>
+                <p>EcoFuture is dedicated to creating awareness and driving action towards SDG 13: Climate Action. Together, we build a sustainable future for our planet.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3><span class="footerblack">Quick</span>Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gallary.html">Gallery</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">UserProfile</a></li>
+                </ul>
+            </div>
+
+
+            <div class="footer-section">
+                <h3><span class="footerblack">More</span>Info</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Page Editor</a></li>
+                    <li><a href="#">Validation</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">Team</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 EcoFuture. All rights reserved.</p>
+            <p>Committed to SDG 13: Climate Action for a Sustainable Future</p>
+        </div>
+    </footer>
+
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const modalOverlay = document.getElementById('galleryModal');
+            const modalContent = document.getElementById('modalContent');
+            const modalClose = document.getElementById('modalClose');
+            const modalImg = document.getElementById('modalImg');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+
+            const btnToggleFont = document.getElementById('btnToggleFont');
+            const btnToggleTheme = document.getElementById('btnToggleTheme');
+
+            // Open Modal
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const title = item.getAttribute('data-title');
+                    const desc = item.getAttribute('data-desc');
+                    const imgSrc = item.getAttribute('data-img');
+
+                    modalTitle.textContent = title;
+                    modalDesc.textContent = desc;
+                    modalImg.src = imgSrc;
+
+                    modalOverlay.classList.add('active');
+                });
+            });
+
+            // Close Modal
+            const closeModal = () => {
+                modalOverlay.classList.remove('active');
+            };
+
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e) => {
+                if(e.target === modalOverlay) closeModal();
+            });
+
+            // Toggle Controls
+            btnToggleFont.addEventListener('click', () => {
+                modalContent.classList.toggle('alt-font');
+            });
+
+            btnToggleTheme.addEventListener('click', () => {
+                modalContent.classList.toggle('dark-theme');
+            });
+        });
+    </script>
+</body>
+</html>
