@@ -4,48 +4,7 @@ body {
 }
 
 
-:root {
-  /* Color Palette */
-  --bg-primary: #06140f;
-  --bg-secondary: #0a1f18;
-  --primary-green: #2ecc71;
-  --primary-dark-green: #145c32;
-  --secondary-light-green: #a7f3d0;
-  --accent-blue: #3b82f6;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
- 
-  /* Glassmorphism */
-  --glass-bg: rgba(0, 87, 0, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
- 
-  /* Utility */
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s ease;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
 
-
-  --success-color: #2ecc71;
-  --error-color: #e74c3c;
-  --secondary-color: #a7f3d0;
-  --surface-color: #0a1f18;
-  --primary-color: #2ecc71;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --shadow-soft: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --transition-speed: 0.3s ease;
-
-  /* Form-specific variables (new) */
-  --input-bg: rgba(10, 31, 24, 0.6);
-  --input-border: rgba(46, 204, 113, 0.25);
-  --input-focus: rgba(46, 204, 113, 0.4);
-  --select-arrow: var(--primary-green);
-}
-
-/* ─────────────────────────────────────────────── */
 /* Base Styles */
 * {
   box-sizing: border-box;
