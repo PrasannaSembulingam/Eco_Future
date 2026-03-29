@@ -59,3 +59,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+
+// Character Counter
+const message = document.getElementById("message");
+const counter = document.getElementById("counter");
+
+message.addEventListener("input", () => {
+    let remaining = 300 - message.value.length;
+    counter.textContent = remaining + " characters remaining";
+
+    if (remaining < 50) {
+        counter.classList.add("warning");
+    }
+    if (remaining < 20) {
+        counter.classList.add("danger");
+    }
+});
+
+// Form Validation + Confirmation
+document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name");
+    let email = document.getElementById("email");
+
+    if (name.value.trim() === "") {
+        alert("Please enter your name");
+        name.focus();
+        return;
+    }
+
+    if (!email.value.includes("@")) {
+        alert("Enter valid email");
+        email.focus();
+        return;
+    }
+
+    alert("Thank you for your feedback!");
+    this.reset();
+});
