@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Editor Student - ST2</title>
+    <link rel="icon" href="image/logo.png">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* ── Student banner ── */
+        .stud {
+            background: linear-gradient(135deg, #4fa875 0%, #31533e 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 18px 20px;
+        }
+        .stud h2 { color: #ffffff; margin: 0; font-size: 1.1rem; font-weight: 600; }
+
+        /* ── Two-column page layout ── */
+        .editor-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 260px;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .editor-wrapper { grid-template-columns: 1fr; }
+            .editor-aside { order: -1; }
+        }
+
+        /* ── Section cards — same radius/shadow as .card in style.css ── */
+        .editor-main section {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(26, 77, 46, 0.08);
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .editor-main section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(26, 77, 46, 0.15);
+        }
+        /* Green left accent bar */
+        .editor-main section::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 5px; height: 100%;
+            background: linear-gradient(180deg, #4fa875, #31533e);
+        }
+
+        .editor-main section h2 {
+            color: #31533e;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid #d4edda;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .editor-main section h2 .ico {
+            background: #eef7f1; border-radius: 8px;
+            width: 30px; height: 30px;
+            display: grid; place-items: center;
+            font-size: 0.95rem; flex-shrink: 0;
+        }
+        .editor-main section h3 {
+            color: #4fa875; font-size: 0.95rem;
+            margin: 1.1rem 0 0.4rem;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .editor-main section h3::before {
+            content: ''; width: 7px; height: 7px;
+            background: #4fa875; border-radius: 2px;
+            display: block; flex-shrink: 0;
+        }
+        .editor-main section p {
+            color: #5c7063; font-size: 0.9rem;
+            line-height: 1.75; margin-bottom: 0;
+        }
+
+        /* ── Tag pills ── */
+        .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.7rem; }
+        .tag  { font-size: 0.72rem; font-weight: 600; padding: 0.22rem 0.7rem; border-radius: 99px; }
+        .tg { background: #d4edda; color: #31533e; }
+        .tt { background: #ccf4f3; color: #0a6b69; }
+        .ty { background: #fdf5cc; color: #7a5e00; }
+        .tb { background: #e2eeff; color: #1a3a6e; }
+
+        /* ── 2-col info grid ── */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-top: 0.75rem; }
+        @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+        .ig-cell { background: #f6fbf8; border: 1px solid #d4edda; border-radius: 8px; padding: 0.65rem 0.85rem; }
+        .ig-cell .lbl { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4fa875; margin-bottom: 0.15rem; }
+        .ig-cell .val { font-size: 0.82rem; color: #5c7063; }
+
+        /* ── Link buttons — uses site .btn colours exactly ── */
+        .lnk-btn {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            margin-top: 0.6rem; padding: 0.5rem 1.1rem;
+            background-color: #4fa875; color: #ffffff;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .lnk-btn:hover { background-color: #31533e; color: #f5f7f8; }
+        .lnk-btn:active { transform: scale(0.98); }
+        .lnk-btn.outline { background-color: transparent; border: 2px solid #4fa875; color: #31533e; }
+        .lnk-btn.outline:hover { background-color: #4fa875; color: #ffffff; }
+
+        /* ── Highlight boxes ── */
+        .hbox { border-radius: 10px; padding: 0.9rem 1.1rem; display: flex; gap: 0.8rem; align-items: flex-start; margin-top: 0.75rem; }
+        .hbox.green  { background: #eef7f1; border: 1px solid #b2dfbe; }
+        .hbox.yellow { background: #fffbe6; border: 1px solid #f5d87a; }
+        .hbox .hi { font-size: 1.3rem; flex-shrink: 0; }
+        .hbox p   { font-size: 0.87rem; color: #5c7063; margin: 0; }
+
+        /* ── Table ── */
+        .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #d4edda; margin-top: 0.75rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+        thead tr:first-child th { background: #31533e; color: #ffffff; padding: 0.8rem 1rem; text-align: left; font-size: 0.9rem; }
+        thead tr:nth-child(2) th { background: #4fa875; color: #ffffff; padding: 0.55rem 1rem; font-size: 0.78rem; font-weight: 600; }
+        tbody tr { border-bottom: 1px solid #e8f5ee; transition: background 0.15s; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #f0faf4; }
+        td { padding: 0.6rem 1rem; color: #5c7063; vertical-align: top; }
+        td:first-child { color: #31533e; font-weight: 700; text-align: center; width: 48px; }
+
+        /* ── References ── */
+        ul.ref { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem; }
+        ul.ref li { font-size: 0.82rem; color: #5c7063; background: #f6fbf8; border: 1px solid #d4edda; border-radius: 8px; padding: 0.55rem 0.9rem; }
+        ul.ref li a { color: #4fa875; font-size: 0.78rem; word-break: break-all; }
+
+        /* ── Go top ── */
+        p.top { text-align: right; margin-top: 0.5rem; }
+        p.top a { color: #4fa875; font-weight: 600; font-size: 0.88rem; }
+        p.top a:hover { color: #31533e; }
+
+        /* ── Sidebar ── */
+        .editor-aside {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(26, 77, 46, 0.08);
+            padding: 1.5rem 1.25rem;
+            position: sticky; top: 80px;
+        }
+        .editor-aside h3 {
+            color: #31533e; font-size: 0.85rem;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            padding-bottom: 0.65rem; margin-bottom: 0.75rem;
+            border-bottom: 2px solid #4fa875;
+        }
+        .top-level-ul { list-style: none; padding: 0; }
+        .top-level-ul > li { font-size: 0.75rem; font-weight: 700; color: #5c7063; letter-spacing: 0.06em; text-transform: uppercase; margin: 0.75rem 0 0.3rem; }
+        .top-level-ul ul { list-style: none; padding-left: 0.65rem; display: flex; flex-direction: column; gap: 0.25rem; }
+        .top-level-ul ul li a { font-size: 0.85rem; font-weight: 500; color: #4fa875; text-decoration: none; padding: 0.28rem 0.55rem; border-radius: 6px; display: flex; align-items: center; gap: 0.35rem; transition: background 0.15s, color 0.15s; }
+        .top-level-ul ul li a::before { content: '›'; font-size: 1rem; }
+        .top-level-ul ul li a:hover { background: #eef7f1; color: #31533e; }
+
+        /* SDG badge — uses .intro-section gradient from index.html */
+        .sdg-badge {
+            margin-top: 1.25rem;
+            background: linear-gradient(135deg, #1a4d2ee6, #31533e);
+            border: 2px solid #4fa875;
+            border-radius: 12px;
+            padding: 1rem; text-align: center;
+            box-shadow: 0 4px 15px rgba(26, 77, 46, 0.2);
+        }
+        .sdg-badge .num { font-size: 2.4rem; font-weight: 800; color: #20dd78; line-height: 1; text-shadow: 2px 2px 4px #00000080; }
+        .sdg-badge p    { font-size: 0.75rem; color: #d9f7d7; margin: 0.25rem 0 0; }
+
+        /* ── Animations ── */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+        .editor-main section             { animation: fadeUp 0.4s ease both; }
+        .editor-main section:nth-child(1){ animation-delay: 0.05s; }
+        .editor-main section:nth-child(2){ animation-delay: 0.12s; }
+        .editor-main section:nth-child(3){ animation-delay: 0.19s; }
+        .editor-main section:nth-child(4){ animation-delay: 0.26s; }
+        .editor-main section:nth-child(5){ animation-delay: 0.33s; }
+        .editor-main section:nth-child(6){ animation-delay: 0.40s; }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER — identical structure to index.html -->
+    <header id="top">
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="image/logo.png" alt="climate change logo">
+                <div class="logo-text">Eco<span>Future</span></div>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="simulator.html" class="active">Simulator</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="team.html">Team</a></li>
+                    <li><a href="profile.html">UserProfile</a></li>
+                    <li><a href="sitemap.html">Sitemap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- STUDENT BANNER -->
+    <section class="stud">
+        <h2>P.B.W.Siriwardhana &nbsp;·&nbsp; EcoFuture &nbsp;·&nbsp; Student 2</h2>
+    </section>
+
+    <!-- MAIN 2-COL LAYOUT -->
+    <div class="editor-wrapper">
+
+        <main class="editor-main">
+
+            <!-- 1. SPLASH SCREEN -->
+            <section id="splash">
+                <h2><span class="ico">🌍</span> Splash Screen</h2>
+
+                <h3>Technical Description</h3>
+                <p>
+                    The splash screen uses a full-viewport layout with CSS Flexbox and
+                    <code>min-height: 100vh</code>. The background uses the site's fixed
+                    gradient (<code>linear-gradient(135deg, #1b7607, #000000)</code>)
+                    inherited directly from <code>style.css</code>, overlaid with an animated
+                    SVG particle layer to add visual depth. The EcoFuture logo fades in via a
+                    CSS <code>@keyframes</code> animation (<code>opacity 0→1</code> +
+                    <code>translateY</code>), followed by staggered reveals of the site tagline
+                    and a loading progress bar styled in the site's <code>#4fa875</code> accent
+                    colour. JavaScript listens for the <code>window.load</code> event, then
+                    drives the progress bar to 100% before a <code>transitionend</code>
+                    callback redirects to <code>index.html</code>.
+                </p>
+
+                <div class="tags">
+                    <span class="tag tg">HTML5</span>
+                    <span class="tag tt">CSS Animations</span>
+                    <span class="tag ty">JavaScript</span>
+                    <span class="tag tg">SVG Particles</span>
+                    <span class="tag tb">Flexbox</span>
+                    <span class="tag tg">Responsive</span>
+                </div>
+
+                <div class="info-grid">
+                    <div class="ig-cell">
+                        <div class="lbl">Layout Method</div>
+                        <div class="val">Flexbox · min-height: 100vh · centred</div>
+                    </div>
+                    <div class="ig-cell">
+                        <div class="lbl">Background</div>
+                        <div class="val">Site gradient #1b7607 → #000 (background-attachment: fixed)</div>
+                    </div>
+                    <div class="ig-cell">
+                        <div class="lbl">Animation Technique</div>
+                        <div class="val">CSS @keyframes + JS transitionend callback</div>
+                    </div>
+                    <div class="ig-cell">
+                        <div class="lbl">Redirect Logic</div>
+                        <div class="val">transitionend → window.location.href = "index.html"</div>
+                    </div>
+                </div>
+
+                <h3>Accessibility</h3>
+                <p>
+                    All animated elements respect the <code>prefers-reduced-motion</code>
+                    media query — users who have reduced motion enabled skip the animation
+                    and redirect immediately to <code>index.html</code>. The loading progress
+                    bar carries <code>role="progressbar"</code>, <code>aria-valuenow</code>,
+                    and <code>aria-valuemax="100"</code> so screen readers announce loading
+                    progress. All text and background colour combinations on the dark gradient
+                    meet WCAG 2.1 AA contrast ratios.
+                </p>
+
+                <h3>Link to the Validation Page</h3>
+                <a class="lnk-btn outline" href="validation_ST2.html#splashVal">↗ View Validation Snapshot</a>
+
+                <h3>Link to the Page</h3>
+                <a class="lnk-btn" href="splash.html">↗ Open Splash Screen</a>
+            </section>
+
+            <!-- 2. SDG ACTION IMPACT SIMULATOR -->
+            <section id="simulator">
+                <h2><span class="ico">⚡</span> SDG Action Impact Simulator</h2>
+
+                <h3>Technical Description</h3>
+                <p>
+                    The simulator is an interactive single-page tool that lets users choose
+                    eco-friendly actions — switching to renewable energy, reducing meat
+                    consumption, planting trees — and instantly see the calculated CO₂
+                    reduction impact. The page reuses the site's <code>.btn</code> and
+                    <code>.btn-accent</code> classes from <code>style.css</code> for all
+                    action buttons, and the <code>#4fa875 / #31533e</code> palette for the
+                    results panel. Interaction is driven by <code>querySelectorAll</code> and
+                    <code>addEventListener('change')</code> on checkboxes and
+                    <code>&lt;input type="range"&gt;</code> sliders. Impact values are stored
+                    in a JavaScript data object with research-based CO₂ coefficients. Results
+                    are displayed as an animated radial ring drawn on a
+                    <code>&lt;canvas&gt;</code> element, alongside a colour-coded summary bar.
+                    A reset button clears all selections and re-initialises the canvas context.
+                </p>
+
+                <div class="tags">
+                    <span class="tag ty">JavaScript ES6</span>
+                    <span class="tag tt">Canvas API</span>
+                    <span class="tag tg">CSS Custom Properties</span>
+                    <span class="tag tb">DOM Manipulation</span>
+                    <span class="tag tg">Data Visualisation</span>
+                    <span class="tag ty">SDG 13</span>
+                </div>
+
+                <div class="info-grid">
+                    <div class="ig-cell">
+                        <div class="lbl">Core Interaction</div>
+                        <div class="val">Checkboxes + range sliders with live score update</div>
+                    </div>
+                    <div class="ig-cell">
+                        <div class="lbl">Visualisation</div>
+                        <div class="val">Canvas radial ring + animated colour-coded bar</div>
+                    </div>
+                    <div class="ig-cell">
+                        <div class="lbl">SDG Alignment</div>
+                        <div class="val">SDG 13 — Climate Action (primary goal)</div>
+                    </div>
+                    <div class="ig-cell">
+                        <div class="lbl">Data Source</div>
+                        <div class="val">JS object with research-based CO₂ coefficients</div>
+                    </div>
+                </div>
+
+                <h3>Accessibility</h3>
+                <p>
+                    Every input has an explicit <code>&lt;label for=""&gt;</code> pairing.
+                    The canvas chart contains a fallback <code>&lt;table&gt;</code> inside it
+                    for screen reader users. The live score display uses
+                    <code>role="status"</code> and <code>aria-live="polite"</code> so score
+                    changes are announced without interrupting the user. All controls are
+                    fully keyboard operable — sliders respond to arrow keys and checkboxes
+                    to spacebar. The layout is verified at 200% zoom with no horizontal scroll.
+                </p>
+
+                <h3>Link to the Validation Page</h3>
+                <a class="lnk-btn outline" href="validation_ST2.html#simulatorVal">↗ View Validation Snapshot</a>
+
+                <h3>Link to the Page</h3>
+                <a class="lnk-btn" href="simulator.html">↗ Open SDG Simulator</a>
+            </section>
+
+            <!-- 3. CHALLENGES -->
+            <section id="challenges">
+                <h2><span class="ico">🧩</span> Challenges and Lessons Learned</h2>
+                <div class="hbox yellow">
+                    <span class="hi">💡</span>
+                    <p>
+                        The hardest challenge was synchronising the splash-screen animation
+                        timing to feel seamless across different devices and connection speeds.
+                        I learned to use <code>transitionend</code> events instead of
+                        hard-coded <code>setTimeout</code> delays for more reliable behaviour.
+                        Building the Canvas impact chart introduced me to the Canvas 2D API
+                        and the importance of providing accessible fallbacks. Maintaining
+                        visual consistency with the team's shared <code>style.css</code> —
+                        reusing the <code>#4fa875 / #31533e</code> palette, the
+                        <code>.card</code> layout, and <code>.btn</code> component — reinforced
+                        how valuable a shared design system is in a group project.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 4. COMPLIANCE -->
+            <section id="compliance">
+                <h2><span class="ico">✅</span> Compliance</h2>
+                <div class="hbox green">
+                    <span class="hi">🛡️</span>
+                    <p>
+                        All images on the splash screen include descriptive <code>alt</code>
+                        text. No third-party assets are used without an appropriate Creative
+                        Commons or royalty-free licence. The SDG 13 icon is sourced from the
+                        official UN SDG Assets package under open licence. Colour contrast
+                        ratios for all text have been verified against WCAG 2.1 AA. No
+                        personal user data is collected or stored on either page. JavaScript
+                        is vanilla with no external library dependencies, keeping load times
+                        minimal.
+                    </p>
+                </div>
+            </section>
+
+            <!-- 5. GROUP MEETINGS LOG -->
+            <section id="meetings">
+                <h2><span class="ico">📋</span> Group Meetings and Individual Contribution Log</h2>
+                <div class="tbl-wrap">
+                    <table>
+                        <thead>
+                            <tr><th colspan="6">Group Meetings and Contribution Log</th></tr>
+                            <tr>
+                                <th>Meeting</th>
+                                <th>Date &amp; Time</th>
+                                <th>Format</th>
+                                <th>Objective</th>
+                                <th>Attended</th>
+                                <th>Your Individual Contribution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>22 Feb 2026</td>
+                                <td>Face-to-face</td>
+                                <td>Agree SDG and assign roles</td>
+                                <td>Yes</td>
+                                <td>Volunteered to build the Splash Screen and SDG Impact Simulator pages.</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>26 Feb 2026</td>
+                                <td>Face-to-face</td>
+                                <td>Review sample template</td>
+                                <td>Yes</td>
+                                <td>Proposed the full-screen splash animation concept and SDG 13 as the simulator focus.</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>05 Mar 2026</td>
+                                <td>Face-to-face</td>
+                                <td>Progress review</td>
+                                <td>Yes</td>
+                                <td>Demonstrated the working splash animation; received team feedback on redirect timing.</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>08 Mar 2026</td>
+                                <td>Face-to-face</td>
+                                <td>Simulator design session</td>
+                                <td>Yes</td>
+                                <td>Presented the canvas chart prototype and gathered input on the actions list.</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>15 Mar 2026</td>
+                                <td>Face-to-face</td>
+                                <td>GitHub project setup</td>
+                                <td>Yes</td>
+                                <td>Pushed both pages to the shared repository and resolved merge conflicts.</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>24 Mar 2026</td>
+                                <td>Face-to-face</td>
+                                <td>Final progress review</td>
+                                <td>Yes</td>
+                                <td>Completed accessibility fixes for the simulator and updated all validation screenshots.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 6. REFERENCES -->
+            <section id="references">
+                <h2><span class="ico">📚</span> References</h2>
+                <ul class="ref">
+                    <li>United Nations (2023) <em>SDG Icons and Brand Guidelines.</em> Available at: <a href="https://www.un.org/sustainabledevelopment/news/communications-material/">https://www.un.org/sustainabledevelopment/</a> (Accessed: 10 Feb 2026).</li>
+                    <li>MDN Web Docs (2025) <em>Using the Canvas API.</em> Available at: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial">https://developer.mozilla.org/Canvas_API/Tutorial</a> (Accessed: 12 Feb 2026).</li>
+                    <li>W3C (2023) <em>Web Content Accessibility Guidelines (WCAG) 2.1.</em> Available at: <a href="https://www.w3.org/TR/WCAG21/">https://www.w3.org/TR/WCAG21/</a> (Accessed: 15 Feb 2026).</li>
+                    <li>iStock (2025) <em>Climate-themed splash background image.</em> Available at: <a href="https://www.istockphoto.com/">https://www.istockphoto.com/</a> (Accessed: 11 Feb 2026).</li>
+                    <li>CSS-Tricks (2024) <em>A Complete Guide to CSS Animations.</em> Available at: <a href="https://css-tricks.com/almanac/properties/a/animation/">https://css-tricks.com/animation/</a> (Accessed: 18 Feb 2026).</li>
+                </ul>
+            </section>
+
+            <p class="top"><a href="#top">↑ Go top</a></p>
+
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="editor-aside">
+            <h3>Core pages developed:</h3>
+            <ul class="top-level-ul">
+                <li>Student 2</li>
+                <ul>
+                    <li><a href="#splash">Splash Screen</a></li>
+                    <li><a href="#simulator">SDG Simulator</a></li>
+                </ul>
+                <li>Sections</li>
+                <ul>
+                    <li><a href="#challenges">Challenges</a></li>
+                    <li><a href="#compliance">Compliance</a></li>
+                    <li><a href="#meetings">Meetings</a></li>
+                    <li><a href="#references">References</a></li>
+                </ul>
+            </ul>
+            <!-- SDG badge styled with .intro-section gradient from index.html -->
+            <div class="sdg-badge">
+                <div class="num">13</div>
+                <p>Climate Action<br>SDG Focus</p>
+            </div>
+        </aside>
+
+    </div><!-- /editor-wrapper -->
+
+    <!-- FOOTER — exact copy from index.html -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><span class="footerblack">Student</span>Details</h3>
+                <ul class="footer-links">
+                    <li>Thanujan (ST1)</li>
+                    <li>Your Name (ST2)</li>
+                    <li>Prasanna (ST3)</li>
+                    <li>Ahmed Arhab (ST4)</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3><span class="footerblack">Page</span>Editor</h3>
+                <ul class="footer-links">
+                    <li><a href="pageEditor_ST1.html">Student 1</a></li>
+                    <li><a href="pageEditor_ST2.html">Student 2</a></li>
+                    <li><a href="pageEditor_ST3.html">Student 3</a></li>
+                    <li><a href="pageEditor_ST4.html">Student 4</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3><span class="footerblack">Valid</span>ation</h3>
+                <ul class="footer-links">
+                    <li><a href="validation_ST1.html">Student 1</a></li>
+                    <li><a href="validation_ST2.html">Student 2</a></li>
+                    <li><a href="validation_ST3.html">Student 3</a></li>
+                    <li><a href="validation_ST4.html">Student 4</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3><span class="footerblack">More</span>Info</h3>
+                <ul class="footer-links">
+                    <li><a href="sitemap.html">Sitemap</a></li>
+                    <li><a href="team.html">Team</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

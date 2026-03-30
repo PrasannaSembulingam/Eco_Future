@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFuture - Renewable Energy</title>
+    <link rel="icon" href="image/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+        /* ── Page-specific layout ── */
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 2.5rem;
+            align-items: start;
+            margin-top: 2rem;
+        }
+
+        /* ── Quick-links sidebar ── */
+
+        .quick-links-panel {
+            position: sticky;
+            top: 90px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(79, 168, 117, 0.35);
+            border-radius: 14px;
+            padding: 1.5rem 1.25rem;
+            backdrop-filter: blur(6px);
+        }
+
+        .quick-links-panel h2 {
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #4fa875;
+            margin-bottom: 1.1rem;
+            font-weight: 800;
+        }
+
+        .quick-links-panel ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .quick-links-panel ul li a {
+            display: block;
+            padding: 7px 12px;
+            border-radius: 8px;
+            color: #c8e6d4;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: background 0.25s, color 0.25s;
+            border-left: 3px solid transparent;
+        }
+
+        .quick-links-panel ul li a:hover,
+        .quick-links-panel ul li a.ql-active {
+            background: rgba(79, 168, 117, 0.18);
+            color: #7fffaa;
+            border-left-color: #4fa875;
+        }
+
+        /* ── Article area ── */
+
+        .article-body {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        /* Hero banner */
+        .hero-banner {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 360px;
+            display: flex;
+            align-items: flex-end;
+            box-shadow: 0 8px 32px rgba(26, 77, 46, 0.45);
+        }
+
+        .hero-banner img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.65) saturate(1.1);
+        }
+
+        .hero-banner-overlay {
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(transparent, rgba(10, 40, 20, 0.92));
+            width: 100%;
+            padding: 2.5rem 2rem 2rem;
+        }
+
+        .hero-banner-overlay h1 {
+            color: #fff;
+            font-size: 2.2rem;
+            line-height: 1.25;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .hero-banner-overlay p {
+            color: #c8f0d8;
+            font-size: 1.05rem;
+            margin: 0;
+            max-width: 680px;
+        }
+
+        /* Content sections */
+        .content-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(79, 168, 117, 0.18);
+            border-radius: 16px;
+            padding: 2rem 2.2rem;
+            scroll-margin-top: 100px;
+        }
+
+        .content-section h2 {
+            color: #7fff9e;
+            font-size: 1.55rem;
+            margin-bottom: 0.9rem;
+            border-bottom: 2px solid rgba(79, 168, 117, 0.3);
+            padding-bottom: 0.6rem;
+        }
+
+        .content-section h3 {
+            color: #4fa875;
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .content-section p {
+            color: #c8e6d4;
+            line-height: 1.75;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Energy type cards */
+        .energy-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .energy-type-card {
+            background: rgba(79, 168, 117, 0.1);
+            border: 1px solid rgba(79, 168, 117, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            transition: transform 0.25s, background 0.25s;
+        }
+
+        .energy-type-card:hover {
+            transform: translateY(-4px);
+            background: rgba(79, 168, 117, 0.2);
+        }
+
+        .energy-icon {
+            font-size: 2.4rem;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .energy-type-card h3 {
+            color: #a8f0c0;
+            font-size: 0.95rem;
+            margin: 0 0 0.4rem;
+        }
+
+        .energy-type-card p {
+            color: #90c8a8;
+            font-size: 0.82rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Comparison table */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.2rem;
+            font-size: 0.93rem;
+        }
+
+        .styled-table th {
+            background: rgba(79, 168, 117, 0.3);
+            color: #c8f0d8;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .styled-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .styled-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .styled-table td {
+            padding: 11px 16px;
+            color: #b8d8c8;
+            border-bottom: 1px solid rgba(79, 168, 117, 0.12);
+            vertical-align: top;
+        }
+
+        .styled-table tr:nth-child(even) td {
+            background: rgba(79, 168, 117, 0.06);
+        }
+
+        .styled-table tr:hover td {
+            background: rgba(79, 168, 117, 0.14);
+        }
+
+        /* Benefits list */
+        .benefits-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #c8e6d4;
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        .benefits-list li::before {
+            content: "✦";
+            color: #4fa875;
+            font-size: 0.8rem;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Challenges */
+        .challenges-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .challenges-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #c8e6d4;
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        .challenges-list li::before {
+            content: "▲";
+            color: #e8a840;
+            font-size: 0.7rem;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        /* Section image */
+        .section-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 1.4rem;
+            object-fit: cover;
+            max-height: 280px;
+            filter: brightness(0.9) saturate(1.05);
+        }
+
+        /* Conclusion highlight box */
+        .conclusion-box {
+            background: linear-gradient(135deg, rgba(79,168,117,0.18), rgba(32,221,120,0.1));
+            border: 1px solid rgba(79, 168, 117, 0.45);
+            border-radius: 14px;
+            padding: 1.8rem 2rem;
+            text-align: center;
+        }
+
+        .conclusion-box p {
+            color: #d8f0e4;
+            font-size: 1.05rem;
+            line-height: 1.75;
+            margin: 0;
+        }
+
+        /* Go to top button */
+        .go-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 46px;
+            height: 46px;
+            background: #4fa875;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 14px rgba(79, 168, 117, 0.5);
+            transition: background 0.25s, transform 0.2s;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, background 0.25s, transform 0.2s;
+        }
+
+        .go-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .go-to-top:hover {
+            background: #31533e;
+            transform: translateY(-3px);
+            color: #fff;
+        }
+
+        .go-to-top::after {
+            content: "↑";
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-links-panel {
+                position: static;
+            }
+
+            .quick-links-panel ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .quick-links-panel ul li a {
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+
+            .quick-links-panel ul li a:hover,
+            .quick-links-panel ul li a.ql-active {
+                border-left-color: transparent;
+                border-bottom-color: #4fa875;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-banner {
+                height: 260px;
+            }
+
+            .hero-banner-overlay h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-section {
+                padding: 1.4rem 1.2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ── HEADER (same as index.html) ── -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="image/logo.png" alt="EcoFuture logo">
+                <div class="logo-text">Eco<span>Future</span></div>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="simulator.html">Simulator</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="team.html">Team</a></li>
+                    <li><a href="profile.html">UserProfile</a></li>
+                    <li><a href="sitemap.html">Sitemap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ── MAIN ── -->
+    <main class="container">
+
+        <div class="content-wrapper">
+
+            <!-- Sidebar Quick Links -->
+            <aside>
+                <div class="quick-links-panel">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li><a href="#what" class="ql-link">What is Renewable Energy?</a></li>
+                        <li><a href="#importance" class="ql-link">Why It Matters</a></li>
+                        <li><a href="#types" class="ql-link">Types</a></li>
+                        <li><a href="#comparison" class="ql-link">Comparison</a></li>
+                        <li><a href="#benefits" class="ql-link">Benefits</a></li>
+                        <li><a href="#challenges" class="ql-link">Challenges</a></li>
+                        <li><a href="#future" class="ql-link">Future</a></li>
+                        <li><a href="#conclusion" class="ql-link">Conclusion</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Article -->
+            <div class="article-body">
+
+                <!-- Hero -->
+                <div class="hero-banner" id="what">
+                    <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&q=80&w=1200" alt="Wind Turbines in a field">
+                    <div class="hero-banner-overlay">
+                        <h1>Renewable Energy for a Sustainable Future</h1>
+                        <p>Discover how renewable energy sources can help combat climate change and ensure a sustainable future as part of SDG 7.</p>
+                    </div>
+                </div>
+
+                <!-- Why It Matters -->
+                <section class="content-section" id="importance">
+                    <h2>Why Renewable Energy Matters</h2>
+                    <p>Renewable energy is crucial in addressing climate change and ensuring a cleaner future. It reduces dependence on fossil fuels, minimizes environmental damage, and is a key element of global sustainability goals.</p>
+                    <p>The burning of fossil fuels remains the dominant driver of greenhouse gas emissions worldwide. Accelerating the transition to renewables is therefore one of the most direct levers we have to limit global warming and protect ecosystems, economies, and communities.</p>
+                </section>
+
+                <!-- Types -->
+                <section class="content-section" id="types">
+                    <h2>Types of Renewable Energy</h2>
+                    <p>Each renewable source offers a distinct mechanism and set of advantages. Together, they form a diverse portfolio capable of meeting the world's growing energy demands.</p>
+
+                    <div class="energy-types-grid">
+                        <div class="energy-type-card">
+                            <span class="energy-icon">☀️</span>
+                            <h3>Solar Energy</h3>
+                            <p>Solar panels convert sunlight into electricity, providing a clean and abundant energy source with minimal environmental impact.</p>
+                        </div>
+                        <div class="energy-type-card">
+                            <span class="energy-icon">💨</span>
+                            <h3>Wind Energy</h3>
+                            <p>Wind turbines harness wind power to generate electricity, reducing reliance on fossil fuels and cutting carbon emissions.</p>
+                        </div>
+                        <div class="energy-type-card">
+                            <span class="energy-icon">💧</span>
+                            <h3>Hydropower</h3>
+                            <p>Uses the energy of moving water to generate electricity — one of the oldest and most reliable renewable sources.</p>
+                        </div>
+                        <div class="energy-type-card">
+                            <span class="energy-icon">🌋</span>
+                            <h3>Geothermal Energy</h3>
+                            <p>Heat from within the Earth can generate electricity or provide direct heating for homes and industries.</p>
+                        </div>
+                        <div class="energy-type-card">
+                            <span class="energy-icon">🌿</span>
+                            <h3>Biomass Energy</h3>
+                            <p>Organic materials like wood, crop waste, and biofuels can generate heat and electricity as a renewable alternative.</p>
+                        </div>
+                    </div>
+
+                    <img
+                        src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=1000"
+                        alt="Solar panels and wind turbines"
+                        class="section-img">
+                </section>
+
+                <!-- Comparison -->
+                <section class="content-section" id="comparison">
+                    <h2>Eco-Friendly Practices vs. Traditional Practices</h2>
+                    <p>Understanding the contrast between sustainable and conventional approaches helps highlight the urgency of transitioning to cleaner energy systems.</p>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Eco-Friendly Practices</th>
+                                <th>Traditional Practices</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Environmental Impact</strong></td>
+                                <td>Reduced carbon emissions, improved biodiversity</td>
+                                <td>Higher carbon footprint, land degradation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Soil Health</strong></td>
+                                <td>Enhanced soil fertility and structure</td>
+                                <td>Soil erosion, reduced organic content</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Water Use</strong></td>
+                                <td>Water conservation through natural methods</td>
+                                <td>High water consumption and pollution</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Economic Cost</strong></td>
+                                <td>Lower long-term operating costs</td>
+                                <td>Volatile fuel prices, high long-term spend</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Energy Security</strong></td>
+                                <td>Domestic, decentralised supply</td>
+                                <td>Dependence on imported fossil fuels</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Benefits -->
+                <section class="content-section" id="benefits">
+                    <h2>Benefits of Renewable Energy</h2>
+                    <p>Renewable energy offers numerous advantages that extend well beyond reducing emissions — from public health to economic opportunity.</p>
+                    <ul class="benefits-list">
+                        <li>Lower greenhouse gas emissions, directly slowing the pace of global warming</li>
+                        <li>Reduced air and water pollution, leading to improved public health outcomes</li>
+                        <li>A more stable and resilient energy economy less vulnerable to fuel-price shocks</li>
+                        <li>Job creation in green industries — solar, wind, and storage manufacturing and installation</li>
+                        <li>Energy independence and greater national security for importing nations</li>
+                        <li>Long-term cost savings for households and businesses once infrastructure is in place</li>
+                        <li>Preservation of natural ecosystems and biodiversity for future generations</li>
+                    </ul>
+                    <img
+                        src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1000"
+                        alt="Green city with renewable energy"
+                        class="section-img">
+                </section>
+
+                <!-- Challenges -->
+                <section class="content-section" id="challenges">
+                    <h2>Challenges in Adoption</h2>
+                    <p>Despite the clear benefits, widespread adoption of renewable energy faces several real-world hurdles that policymakers, businesses, and communities must address together.</p>
+                    <ul class="challenges-list">
+                        <li>High upfront capital costs for installation and grid integration</li>
+                        <li>Intermittent generation from solar and wind depends on weather conditions</li>
+                        <li>Existing grid infrastructure requires significant upgrades to handle distributed energy</li>
+                        <li>Energy storage technology (batteries) still needs to scale in cost and capacity</li>
+                        <li>Political and regulatory barriers, including subsidies that favour fossil fuels</li>
+                        <li>Geographic limitations — not all regions have equal access to sun, wind, or water resources</li>
+                    </ul>
+                </section>
+
+                <!-- Future -->
+                <section class="content-section" id="future">
+                    <h2>Future of Renewable Energy</h2>
+                    <p>The future of renewable energy is promising. Rapid advancements in solar panel efficiency, offshore wind, green hydrogen, and battery storage are driving down costs year after year.</p>
+                    <p>Government policies, international agreements such as the Paris Accord, and growing private-sector investment are all accelerating the global transition. According to the International Energy Agency, renewables are set to account for nearly 90% of global electricity capacity expansion over the coming decade.</p>
+                    <p>Emerging technologies — from floating solar farms to tidal generators and next-generation nuclear fusion — point toward a world where clean, affordable, and reliable energy is universally accessible.</p>
+                    <img
+                        src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?auto=format&fit=crop&q=80&w=1000"
+                        alt="Future renewable energy landscape"
+                        class="section-img">
+                </section>
+
+                <!-- Conclusion -->
+                <section class="content-section" id="conclusion">
+                    <h2>Conclusion</h2>
+                    <div class="conclusion-box">
+                        <p>Transitioning to renewable energy is one of the most impactful steps humanity can take to reduce carbon emissions and mitigate climate change. By supporting and adopting renewable energy solutions — at the individual, community, and national level — we can ensure a cleaner and more sustainable future for generations to come. Every watt of clean energy generated is a step closer to the world we want to leave behind.</p>
+                    </div>
+                    <div style="margin-top: 1.5rem; text-align:center;">
+                        <a href="simulator.html" class="btn btn-accent">Try the Impact Simulator →</a>
+                    </div>
+                </section>
+
+            </div><!-- /article-body -->
+        </div><!-- /content-wrapper -->
+    </main>
+
+    <!-- Go to top button -->
+    <a href="#" class="go-to-top" id="goTop" aria-label="Go to top"></a>
+
+    <!-- ── FOOTER (same as index.html) ── -->
+    <footer class="footer">
+        <div class="footer-container">
+
+            <div class="footer-section">
+                <h3><span class="footerblack">Student</span>Details</h3>
+                <ul class="footer-links">
+                    <li>Thanujan (ST1)</li>
+                    <li>Pansilu (ST2)</li>
+                    <li>Prasanna (ST3)</li>
+                    <li>Ahmed Arhab (ST4)</li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3><span class="footerblack">Page</span>Editor</h3>
+                <ul class="footer-links">
+                    <li><a href="pageEditor_ST1.html">Student 1</a></li>
+                    <li><a href="pageEditor_ST2.html">Student 2</a></li>
+                    <li><a href="pageEditor_ST3.html">Student 3</a></li>
+                    <li><a href="pageEditor_ST4.html">Student 4</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3><span class="footerblack">Valid</span>ation</h3>
+                <ul class="footer-links">
+                    <li><a href="validation_ST1.html">Student 1</a></li>
+                    <li><a href="validation_ST2.html">Student 2</a></li>
+                    <li><a href="validation_ST3.html">Student 3</a></li>
+                    <li><a href="validation_ST4.html">Student 4</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3><span class="footerblack">More</span>Info</h3>
+                <ul class="footer-links">
+                    <li><a href="sitemap.html">Sitemap</a></li>
+                    <li><a href="team.html">Team</a></li>
+                    <li><a href="index.html">Home</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 EcoFuture. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Go-to-top visibility
+        const goTop = document.getElementById('goTop');
+        window.addEventListener('scroll', () => {
+            goTop.classList.toggle('visible', window.scrollY > 400);
+        });
+
+        // Smooth active highlight on quick-links
+        const sections = document.querySelectorAll('.content-section, .hero-banner');
+        const links    = document.querySelectorAll('.ql-link');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    links.forEach(l => l.classList.remove('ql-active'));
+                    const active = document.querySelector(`.ql-link[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('ql-active');
+                }
+            });
+        }, { rootMargin: '-30% 0px -60% 0px' });
+
+        sections.forEach(s => observer.observe(s));
+    </script>
+
+</body>
+</html>
